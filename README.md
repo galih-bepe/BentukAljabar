@@ -1,6 +1,4 @@
-Berikut adalah kode HTML lengkap untuk file **`algebra_game.html`**. Anda dapat menyalin seluruh kode di bawah ini, menyimpannya ke dalam file bertipe `.html`, dan langsung membukanya di browser HP Android maupun PC/Laptop:
-
-```html
+html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -852,5 +850,3 @@ Berikut adalah kode HTML lengkap untuk file **`algebra_game.html`**. Anda dapat 
     </script>
 </body>
 </html>
-
-```
