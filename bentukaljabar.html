@@ -3,849 +3,1062 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Media Pembelajaran Unsur-Unsur Aljabar</title>
+    <title>Membedakan Variabel, Koefisien, Konstanta, dan Suku</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
+    <!-- Font Inter & Fredoka + Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         brand: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            500: '#0284c7',
-                            600: '#0369a1',
-                            700: '#095186',
+                            purple: '#6C5CE7',
+                            indigo: '#4834D4',
+                            pink: '#FD79A8',
+                            yellow: '#FDCB6E',
+                            green: '#00B894',
+                            blue: '#0984E3',
+                            dark: '#2D3436'
                         }
                     },
                     fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        display: ['Fredoka', 'cursive'],
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Fredoka', 'sans-serif']
                     }
                 }
             }
         }
     </script>
+    
     <style>
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
-            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            user-select: none;
+            min-height: 100vh;
         }
+        
         .font-display {
-            font-family: 'Fredoka', cursive;
+            font-family: 'Fredoka', sans-serif;
         }
-        .math-expr {
-            font-family: 'Fredoka', cursive;
-            letter-spacing: 0.05em;
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.08);
         }
-        /* Custom scrollbar for small popups if needed */
-        ::-webkit-scrollbar {
-            width: 6px;
+
+        .btn-3d {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 0 0 rgba(0,0,0,0.15);
         }
-        ::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.6);
+
+        .btn-3d:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 0 rgba(0,0,0,0.15);
         }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(56, 189, 248, 0.4);
-            border-radius: 4px;
+
+        .btn-3d-indigo {
+            background-color: #4834D4;
+            color: white;
+            box-shadow: 0 4px 0 0 #301e8a;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(56, 189, 248, 0.7);
+
+        .btn-3d-emerald {
+            background-color: #10B981;
+            color: white;
+            box-shadow: 0 4px 0 0 #047857;
+        }
+
+        .btn-3d-amber {
+            background-color: #F59E0B;
+            color: white;
+            box-shadow: 0 4px 0 0 #B45309;
+        }
+
+        @keyframes pulse-subtle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .animate-pulse-subtle {
+            animation: pulse-subtle 2s infinite ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
         }
     </style>
 </head>
-<body class="h-screen max-h-screen w-screen overflow-hidden bg-slate-900 flex flex-col justify-between text-slate-100 select-none">
+<body class="flex flex-col justify-between text-slate-800 min-h-screen">
 
-    <!-- HEADER FIT TO SCREEN -->
-    <header class="w-full bg-slate-800/80 backdrop-blur border-b border-slate-700/60 px-3 py-2 sm:px-6 sm:py-3 flex-none flex items-center justify-between z-20">
-        <div class="flex items-center gap-2 sm:gap-3">
-            <div class="bg-gradient-to-br from-cyan-500 to-blue-600 w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-white shadow-lg shadow-cyan-500/20">
-                <i class="fa-solid font-display font-bold text-lg sm:text-xl">x²</i>
+    <!-- Header & Navigation -->
+    <header class="w-full bg-white/90 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 text-white p-2.5 rounded-2xl shadow-md">
+                    <i class="fa-solid fa-calculator text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-display font-bold text-lg sm:text-xl text-slate-800 leading-tight">Master Unsur Aljabar</h1>
+                    <p class="text-xs text-slate-500 font-medium">Membedakan Variabel, Koefisien, Konstanta, dan Suku</p>
+                </div>
             </div>
-            <div>
-                <h1 id="header-title" class="text-sm sm:text-lg md:text-xl font-bold font-display tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-300">
-                    MEMBEDAKAN UNSUR ALJABAR
-                </h1>
-                <p id="header-subtitle" class="text-[10px] sm:text-xs text-slate-400">Mode Belajar Interaktif</p>
-            </div>
-        </div>
 
-        <!-- Mode Indicator / Progress -->
-        <div class="flex items-center gap-2">
-            <div id="slide-badge" class="bg-cyan-950/80 border border-cyan-500/30 text-cyan-300 text-xs sm:text-sm font-semibold px-2.5 py-1 rounded-lg">
-                Slide 1 / 8
+            <!-- Tab Navigation Header -->
+            <div class="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 gap-1">
+                <button id="navTab1" onclick="switchPage(1)" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold font-display transition-all bg-white text-indigo-600 shadow-sm">
+                    <i class="fa-solid fa-book-open mr-1.5"></i> Halaman 1: Materi (1-8)
+                </button>
+                <button id="navTab2" onclick="switchPage(2)" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold font-display transition-all text-slate-600 hover:text-indigo-600">
+                    <i class="fa-solid fa-pen-to-square mr-1.5"></i> Halaman 2: Latihan Soal
+                </button>
             </div>
-            <button id="btn-quiz-direct" onclick="switchMode('quiz')" class="hidden sm:flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-lg transition-all shadow-md shadow-indigo-600/30">
-                <i class="fa-solid fa-gamepad"></i>
-                <span>Latihan Soal</span>
-            </button>
         </div>
     </header>
 
-    <!-- MAIN CONTAINER (100% VISIBLE WITHOUT FULL PAGE SCROLL) -->
-    <main class="flex-1 w-full max-w-5xl mx-auto px-2 sm:px-4 py-2 sm:py-4 flex flex-col justify-between items-center overflow-hidden">
+    <!-- Main Container -->
+    <main class="w-full max-w-4xl mx-auto p-4 sm:p-6 flex-grow flex flex-col justify-center">
 
         <!-- ================= HALAMAN 1: MATERI SLIDE BERGANTIAN ================= -->
-        <section id="section-materi" class="w-full h-full flex flex-col justify-between items-center gap-2 sm:gap-4">
+        <section id="page1" class="flex flex-col gap-5">
             
-            <!-- PERSAMAAN ALJABAR CONTAINER -->
-            <div class="w-full bg-slate-800/90 border border-cyan-500/30 rounded-2xl p-3 sm:p-5 text-center shadow-2xl relative overflow-hidden flex flex-col justify-center items-center flex-none">
-                <div class="absolute -top-12 -right-12 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none"></div>
-                <div class="absolute -bottom-12 -left-12 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
-
-                <span class="text-[10px] sm:text-xs uppercase tracking-widest text-cyan-400 font-bold mb-1 block">Persamaan Aljabar #<span id="materi-index">1</span></span>
-                
-                <div class="inline-block bg-slate-950/80 px-4 py-2 sm:px-8 sm:py-3 rounded-xl border border-slate-700/80 shadow-inner my-1">
-                    <span id="materi-expression" class="math-expr text-2xl sm:text-4xl md:text-5xl font-bold text-amber-300 tracking-wider">
-                        3x + 2
+            <!-- Slide Progress & Top Info -->
+            <div class="flex justify-between items-center bg-white/80 backdrop-blur-sm px-5 py-3 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex items-center space-x-2">
+                    <span id="slideBadge" class="bg-indigo-600 text-white font-display font-bold text-xs px-3 py-1 rounded-full shadow-sm">
+                        Tampilan 1 dari 8
+                    </span>
+                    <span id="slideSubtitle" class="text-xs text-slate-500 font-medium hidden sm:inline">
+                        Persamaan Linear 1 Variabel
                     </span>
                 </div>
-            </div>
-
-            <!-- RINCIAN UNSUR (RESPONSIVE GRID) -->
-            <div class="w-full flex-1 min-h-0 bg-slate-800/50 border border-slate-700/60 rounded-2xl p-2 sm:p-4 flex flex-col justify-center overflow-y-auto">
-                <h3 class="text-xs sm:text-sm font-semibold text-slate-300 mb-2 text-center flex items-center justify-center gap-2 flex-none">
-                    <i class="fa-solid fa-magnifying-glass text-cyan-400"></i>
-                    <span>Analisis Unsur Aljabar:</span>
-                </h3>
-
-                <div id="materi-details-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-3xl mx-auto w-full">
-                    <!-- Dynamic Content Inserted by JS -->
+                
+                <!-- Dot Progress Indicators -->
+                <div class="flex space-x-1.5" id="slideDots">
+                    <!-- Dynamic dots -->
                 </div>
             </div>
 
-            <!-- ACTION BUTTONS / CONTROL BAR -->
-            <div class="w-full flex-none flex flex-col sm:flex-row items-center justify-between gap-2 pt-1">
-                <button id="btn-prev-slide" onclick="prevSlide()" class="w-full sm:w-auto px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-300 rounded-xl font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 transition disabled:opacity-30 disabled:pointer-events-none">
-                    <i class="fa-solid fa-arrow-left"></i>
-                    <span>Sebelumnya</span>
-                </button>
-
-                <div class="flex items-center gap-2 w-full sm:w-auto justify-center">
-                    <button onclick="showExplanation()" class="flex-1 sm:flex-initial px-4 py-2 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 rounded-xl font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 transition">
-                        <i class="fa-solid fa-circle-question text-amber-400 text-base"></i>
-                        <span>Belum Paham?</span>
-                    </button>
-
-                    <button id="btn-next-slide" onclick="nextSlide()" class="flex-1 sm:flex-initial px-5 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition transform active:scale-95">
-                        <span>Sudah Paham!</span>
-                        <i class="fa-solid fa-circle-check text-base"></i>
-                    </button>
+            <!-- Main Slide Card -->
+            <div class="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden">
+                
+                <!-- Header Title -->
+                <div class="text-center mb-6">
+                    <h2 class="font-display text-2xl sm:text-3xl font-bold text-slate-800">
+                        Membedakan Variabel, Koefisien, Konstanta, dan Suku
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1">
+                        Perhatikan struktur persamaan aljabar berikut dan pahami unsur-unsurnya!
+                    </p>
                 </div>
-            </div>
 
+                <!-- Equation Display Box -->
+                <div class="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-2xl text-center relative overflow-hidden mb-6">
+                    <span class="text-xs uppercase tracking-widest text-indigo-300 font-bold block mb-1">Persamaan Aljabar:</span>
+                    <div id="materiExpr" class="bg-indigo-950/90 border-2 border-indigo-500/50 rounded-2xl px-6 py-4 my-2 text-3xl sm:text-5xl font-display font-bold text-amber-300 tracking-wide inline-block shadow-lg animate-pulse-subtle">
+                        3x + 2
+                    </div>
+                </div>
+
+                <!-- Elements Display Box (Structured List) -->
+                <div class="bg-white border-2 border-indigo-100 rounded-2xl p-5 sm:p-6 shadow-sm mb-6">
+                    <h3 class="font-display font-bold text-indigo-900 text-base sm:text-lg mb-3 flex items-center">
+                        <i class="fa-solid fa-list-check text-indigo-600 mr-2"></i> Rincian Unsur Aljabar:
+                    </h3>
+                    <div id="materiUnsurList" class="space-y-2.5 text-sm sm:text-base text-slate-700">
+                        <!-- Dynamic elements injected here -->
+                    </div>
+                </div>
+
+                <!-- Explanation Panel (Hidden by default, shown when "Belum Paham" clicked) -->
+                <div id="explanationBox" class="hidden bg-amber-50 border-2 border-amber-300 rounded-2xl p-5 mb-6 text-slate-800 animate-pulse-subtle">
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-amber-500 text-white p-2 rounded-xl text-lg shadow-sm">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <h4 class="font-display font-bold text-amber-900 text-base sm:text-lg mb-1">
+                                Penjelasan Langkah demi Langkah:
+                            </h4>
+                            <div id="explanationContent" class="text-xs sm:text-sm text-slate-700 space-y-2 leading-relaxed">
+                                <!-- Dynamic explanation content -->
+                            </div>
+                        </div>
+                        <button onclick="hideExplanation()" class="text-slate-400 hover:text-slate-600 text-sm">
+                            <i class="fa-solid fa-xmark text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Action Navigation Buttons -->
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2">
+                    <!-- Prev Button -->
+                    <button id="prevSlideBtn" onclick="changeSlide(-1)" class="w-full sm:w-auto btn-3d bg-slate-200 hover:bg-slate-300 text-slate-700 font-display font-bold px-5 py-3 rounded-2xl text-sm flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Kembali</span>
+                    </button>
+
+                    <!-- Main Decision Buttons -->
+                    <div class="flex w-full sm:w-auto gap-3">
+                        <button id="btnBelumPaham" onclick="showExplanation()" class="flex-1 sm:flex-none btn-3d btn-3d-amber font-display font-bold px-5 py-3 rounded-2xl text-sm flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-circle-question"></i>
+                            <span>Belum Paham</span>
+                        </button>
+
+                        <button id="btnSudahPaham" onclick="handlePahamClick()" class="flex-1 sm:flex-none btn-3d btn-3d-emerald font-display font-bold px-6 py-3 rounded-2xl text-sm flex items-center justify-center space-x-2">
+                            <span>Sudah Paham</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
         </section>
 
-        <!-- ================= HALAMAN 2: LATIHAN SOAL (QUIZ) ================= -->
-        <section id="section-quiz" class="hidden w-full h-full flex flex-col justify-between items-center gap-2 sm:gap-3">
+
+        <!-- ================= HALAMAN 2: LATIHAN SOAL INTERAKTIF ================= -->
+        <section id="page2" class="hidden flex-col gap-6">
             
-            <!-- QUIZ TOP BAR -->
-            <div class="w-full bg-slate-800/80 border border-slate-700 rounded-xl p-2 sm:p-3 flex items-center justify-between flex-none">
-                <div class="flex items-center gap-2">
-                    <span id="quiz-progress-text" class="text-xs sm:text-sm font-bold text-indigo-300">Soal 1 / 24</span>
-                    <span id="quiz-type-badge" class="text-[10px] sm:text-xs bg-indigo-950 text-indigo-300 border border-indigo-700/50 px-2 py-0.5 rounded-md font-medium hidden sm:inline-block">
-                        Tipe 1
-                    </span>
+            <!-- Quiz Start / Welcome Screen -->
+            <div id="quizIntro" class="glass-card rounded-3xl p-6 sm:p-10 text-center">
+                <div class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl shadow-inner">
+                    <i class="fa-solid fa-pen-to-square"></i>
                 </div>
-                <div class="flex items-center gap-3">
-                    <div class="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-emerald-400">
-                        <i class="fa-solid fa-trophy text-amber-400"></i>
-                        <span>Skor: <span id="quiz-score">0</span></span>
+                <h2 class="font-display text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
+                    Latihan Soal Membedakan Variabel, Koefisien, Konstanta dan Suku
+                </h2>
+                <p class="text-slate-600 text-xs sm:text-sm max-w-lg mx-auto mb-6">
+                    Uji pemahamanmu dengan <strong>24 Soal Latihan</strong> (3 variasi soal untuk masing-masing dari 8 tipe persamaan yang telah kamu pelajari).
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-xl mx-auto mb-8 text-left text-xs">
+                    <div class="p-3 bg-white rounded-2xl border border-slate-200 flex items-center space-x-3">
+                        <i class="fa-solid fa-list-check text-indigo-500 text-xl"></i>
+                        <div>
+                            <span class="font-bold text-slate-800 block">24 Soal</span>
+                            <span class="text-slate-500">Pilihan Ganda</span>
+                        </div>
                     </div>
-                    <button onclick="switchMode('materi')" class="text-xs text-slate-400 hover:text-white underline flex items-center gap-1">
-                        <i class="fa-solid fa-book-open"></i>
-                        <span class="hidden sm:inline">Lihat Materi</span>
-                    </button>
+                    <div class="p-3 bg-white rounded-2xl border border-slate-200 flex items-center space-x-3">
+                        <i class="fa-solid fa-bullseye text-emerald-500 text-xl"></i>
+                        <div>
+                            <span class="font-bold text-slate-800 block">Feedback Langsung</span>
+                            <span class="text-slate-500">Penjelasan Pembahasan</span>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-white rounded-2xl border border-slate-200 flex items-center space-x-3">
+                        <i class="fa-solid fa-award text-amber-500 text-xl"></i>
+                        <div>
+                            <span class="font-bold text-slate-800 block">Skor & Nilai</span>
+                            <span class="text-slate-500">Rekap Pembelajaran</span>
+                        </div>
+                    </div>
                 </div>
+
+                <button onclick="startQuiz()" class="btn-3d btn-3d-indigo font-display text-lg font-bold py-3.5 px-8 rounded-2xl text-white">
+                    <i class="fa-solid fa-play mr-2"></i> Mulai Kuis Sekarang
+                </button>
             </div>
 
-            <!-- QUESTION CARD -->
-            <div class="w-full flex-1 min-h-0 bg-slate-800/90 border border-indigo-500/30 rounded-2xl p-3 sm:p-5 flex flex-col justify-between items-center overflow-y-auto text-center shadow-xl">
+            <!-- Active Quiz Screen -->
+            <div id="quizActive" class="hidden flex-col gap-4">
                 
-                <div class="w-full my-auto flex flex-col items-center">
-                    <p class="text-xs sm:text-sm text-slate-300 font-medium mb-1">Perhatikan persamaan aljabar berikut:</p>
-                    
-                    <div class="bg-slate-950/90 px-5 py-2.5 sm:px-8 sm:py-3.5 rounded-xl border border-indigo-500/40 shadow-inner my-2">
-                        <span id="quiz-expression" class="math-expr text-2xl sm:text-4xl font-bold text-amber-300 tracking-wider">
-                            --
+                <!-- Progress Header Bar -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex justify-between items-center">
+                    <div class="flex items-center space-x-3">
+                        <span id="quizBadge" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full font-display">
+                            Soal 1 dari 24
+                        </span>
+                        <span id="quizCategory" class="text-xs text-slate-500 font-medium hidden sm:inline">
+                            Tipe Persamaan 1
                         </span>
                     </div>
-
-                    <h2 id="quiz-question-text" class="text-sm sm:text-lg font-bold text-white mt-2 max-w-xl">
-                        --
-                    </h2>
-                </div>
-
-                <!-- OPTIONS GRID (4 CHOICES) -->
-                <div id="quiz-options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 w-full max-w-2xl mt-3 flex-none">
-                    <!-- Options generated dynamically -->
-                </div>
-
-                <!-- FEEDBACK / EXPLANATION PANEL AFTER ANSWER -->
-                <div id="quiz-feedback" class="hidden w-full max-w-2xl bg-slate-950/90 border rounded-xl p-3 mt-3 text-left flex flex-col gap-1.5 flex-none animate-fade-in">
-                    <div id="quiz-feedback-header" class="font-bold text-xs sm:text-sm flex items-center gap-2"></div>
-                    <p id="quiz-feedback-text" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
-                </div>
-            </div>
-
-            <!-- QUIZ BOTTOM CONTROLS -->
-            <div class="w-full flex-none flex justify-end">
-                <button id="btn-next-question" onclick="nextQuestion()" disabled class="w-full sm:w-auto px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-30 disabled:pointer-events-none text-white font-bold text-xs sm:text-sm rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30">
-                    <span>Soal Berikutnya</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </button>
-            </div>
-
-        </section>
-
-        <!-- ================= QUIZ RESULT SUMMARY SECTION ================= -->
-        <section id="section-result" class="hidden w-full h-full flex flex-col justify-center items-center text-center p-4">
-            <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl p-6 max-w-lg w-full shadow-2xl flex flex-col items-center">
-                <div class="w-16 h-16 bg-gradient-to-tr from-amber-400 to-yellow-300 rounded-full flex items-center justify-center text-slate-900 text-3xl font-bold shadow-lg mb-4">
-                    <i class="fa-solid fa-crown"></i>
-                </div>
-
-                <h2 class="text-xl sm:text-2xl font-bold font-display text-white mb-1">Latihan Selesai!</h2>
-                <p class="text-xs sm:text-sm text-slate-400 mb-4">Kamu telah menyelesaikan seluruh 24 latihan soal membedakan unsur aljabar.</p>
-
-                <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4 w-full mb-6 flex justify-around items-center">
-                    <div>
-                        <span class="text-xs text-slate-400 block mb-1">Skor Akhir</span>
-                        <span id="final-score" class="text-3xl font-extrabold text-amber-400 font-display">0</span>
-                    </div>
-                    <div class="h-10 w-[1px] bg-slate-800"></div>
-                    <div>
-                        <span class="text-xs text-slate-400 block mb-1">Akurasi</span>
-                        <span id="final-accuracy" class="text-3xl font-extrabold text-cyan-400 font-display">0%</span>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-1" title="Skor Saat Ini">
+                            <i class="fa-solid fa-star text-amber-400"></i>
+                            <span id="currentScore" class="font-bold text-sm text-slate-700">0</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row gap-3 w-full">
-                    <button onclick="restartQuiz()" class="flex-1 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs sm:text-sm transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-rotate-right"></i>
-                        <span>Ulangi Latihan</span>
+                <!-- Question Card -->
+                <div class="glass-card rounded-3xl p-6 sm:p-8">
+                    <div class="text-center mb-6">
+                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-1">Persamaan Aljabar:</span>
+                        <div id="questionExpr" class="bg-indigo-950 text-amber-300 font-display text-3xl sm:text-4xl font-bold py-3 px-6 rounded-2xl inline-block shadow-md">
+                            4a + 5
+                        </div>
+                    </div>
+
+                    <h3 id="questionText" class="font-display text-lg sm:text-xl font-bold text-slate-800 text-center mb-6">
+                        Berapakah jumlah suku pada persamaan di atas?
+                    </h3>
+
+                    <!-- Options Grid -->
+                    <div id="optionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                        <!-- Dynamic Option Buttons -->
+                    </div>
+
+                    <!-- Inline Feedback Box -->
+                    <div id="quizFeedback" class="hidden p-4 rounded-2xl border text-xs sm:text-sm">
+                        <div class="flex items-start space-x-3">
+                            <div id="feedbackIcon" class="text-xl"></div>
+                            <div class="flex-grow">
+                                <h4 id="feedbackTitle" class="font-bold"></h4>
+                                <p id="feedbackText" class="mt-0.5 text-slate-600"></p>
+                            </div>
+                            <button id="nextQuizBtn" onclick="nextQuestion()" class="btn-3d bg-slate-800 hover:bg-slate-900 text-white font-bold px-4 py-2 rounded-xl text-xs">
+                                Lanjut <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Summary Screen -->
+            <div id="quizSummary" class="hidden glass-card rounded-3xl p-6 sm:p-10 text-center">
+                <div class="w-20 h-20 bg-amber-100 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-3 text-4xl shadow-inner">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <h2 class="font-display text-3xl font-bold text-slate-800 mb-1">Latihan Soal Selesai!</h2>
+                <p class="text-slate-500 text-sm mb-6">Berikut adalah rekap pencapaian latihan soal aljabar kamu:</p>
+
+                <!-- Stars Rating -->
+                <div id="finalStars" class="flex justify-center space-x-2 text-3xl text-amber-400 mb-6">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 max-w-md mx-auto mb-6 grid grid-cols-2 gap-4 text-center">
+                    <div>
+                        <span class="text-xs text-slate-400 block font-medium">Skor Total</span>
+                        <span id="summaryScore" class="font-display text-3xl font-bold text-indigo-600">0</span>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-400 block font-medium">Jawaban Benar</span>
+                        <span id="summaryCorrect" class="font-display text-3xl font-bold text-emerald-600">0 / 24</span>
+                    </div>
+                </div>
+
+                <!-- Teacher Feedback Note -->
+                <div class="bg-indigo-50 border border-indigo-100 text-indigo-950 p-4 rounded-2xl text-left text-xs sm:text-sm max-w-md mx-auto mb-8">
+                    <strong class="block mb-1 font-bold"><i class="fa-solid fa-comment-dots mr-1"></i> Catatan Evaluasi:</strong>
+                    <p id="summaryEvalText">Selamat! Kamu sudah memahami konsep dasar unsur aljabar dengan sangat baik.</p>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button onclick="startQuiz()" class="btn-3d bg-indigo-600 hover:bg-indigo-700 text-white font-display font-bold py-3 px-6 rounded-2xl">
+                        <i class="fa-solid fa-rotate-right mr-2"></i> Ulangi Latihan
                     </button>
-                    <button onclick="switchMode('materi')" class="flex-1 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-xl font-bold text-xs sm:text-sm transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-book-open"></i>
-                        <span>Pelajari Materi</span>
+                    <button onclick="switchPage(1)" class="btn-3d bg-slate-700 hover:bg-slate-800 text-white font-display font-bold py-3 px-6 rounded-2xl">
+                        <i class="fa-solid fa-book-open mr-2"></i> Kembali ke Materi
                     </button>
                 </div>
             </div>
+
         </section>
 
     </main>
 
-    <!-- FOOTER FIT TO SCREEN -->
-    <footer class="w-full bg-slate-950/80 border-t border-slate-800 px-3 py-1.5 text-center text-[10px] sm:text-xs text-slate-500 flex-none">
-        <span>Media Pembelajaran Matematika SMP - Unsur-Unsur Bentuk Aljabar</span>
+    <!-- Footer -->
+    <footer class="w-full text-center py-4 text-xs text-slate-500 bg-white/50 border-t border-slate-200/50">
+        Media Pembelajaran Matematika SMP &copy; 2026 — Bentuk Umum Aljabar
     </footer>
 
-    <!-- ================= MODAL PENJELASAN (BELUM PAHAM) ================= -->
-    <div id="modal-explanation" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
-        <div class="bg-slate-800 border border-amber-500/40 rounded-2xl max-w-md w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-pop-in">
-            <!-- Modal Header -->
-            <div class="bg-slate-900 border-b border-slate-700 p-3 sm:p-4 flex items-center justify-between flex-none">
-                <div class="flex items-center gap-2 text-amber-400 font-bold text-sm sm:text-base">
-                    <i class="fa-solid fa-lightbulb text-lg"></i>
-                    <span>Panduan Penjelasan Unsur</span>
-                </div>
-                <button onclick="closeExplanation()" class="text-slate-400 hover:text-white p-1">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-
-            <!-- Modal Content (Scrollable if needed) -->
-            <div id="explanation-content" class="p-4 overflow-y-auto text-xs sm:text-sm text-slate-200 space-y-3 leading-relaxed flex-1">
-                <!-- Inserted by JS dynamically based on current slide -->
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="bg-slate-900 border-t border-slate-700 p-3 flex justify-end flex-none">
-                <button onclick="closeExplanation()" class="px-4 py-2 bg-amber-500 text-slate-950 font-bold text-xs sm:text-sm rounded-xl hover:bg-amber-400 transition">
-                    Saya Mengerti!
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- JavaScript Data & Logic -->
     <script>
-        /* ================= DATA MATERI (SLIDE 1 - 8) ================= */
-        const materiData = [
+        // ================= DATA 8 TAMPILAN PERSAMAAN SPESIFIK (HALAMAN 1) =================
+        const slidesData = [
             {
-                id: 1,
+                slideNum: 1,
                 expression: "3x + 2",
-                details: [
-                    { label: "Jumlah suku", val: "Dua (3x dan 2)", color: "border-cyan-500/40 bg-cyan-950/20" },
-                    { label: "Variabel", val: "x", color: "border-amber-500/40 bg-amber-950/20" },
-                    { label: "Koefisien dari x", val: "3", color: "border-emerald-500/40 bg-emerald-950/20" },
-                    { label: "Konstanta", val: "2", color: "border-indigo-500/40 bg-indigo-950/20" }
+                subtitle: "Bentuk 2 Suku Sederhana",
+                unsur: [
+                    { label: "Jumlah suku", val: "dua" },
+                    { label: "Variabel", val: "x" },
+                    { label: "Koefisien dari x", val: "3" },
+                    { label: "Konstanta", val: "2" }
                 ],
                 explanation: `
-                    <p class="font-bold text-amber-300">Cara Membedakan Unsur pada 3x + 2:</p>
-                    <ul class="list-disc pl-4 space-y-1 mt-1">
-                        <li><b>Suku:</b> Bagian yang dipisahkan oleh tanda (+). Di sini ada 2 suku, yaitu <span class="text-cyan-300 font-semibold">3x</span> dan <span class="text-cyan-300 font-semibold">2</span>.</li>
-                        <li><b>Variabel:</b> Huruf atau simbol penyimpan nilai, yaitu <span class="text-amber-300 font-semibold">x</span>.</li>
-                        <li><b>Koefisien:</b> Angka yang berada tepat di depan variabel. Angka di depan <span class="text-amber-300">x</span> adalah <span class="text-emerald-300 font-semibold">3</span>.</li>
-                        <li><b>Konstanta:</b> Angka murni yang berdiri sendiri tanpa variabel, yaitu <span class="text-indigo-300 font-semibold">2</span>.</li>
-                    </ul>
+                    <p>• <strong>Suku:</strong> Dipisahkan oleh tanda <code>+</code>. Terdiri dari <code>3x</code> dan <code>2</code> (total <strong>dua</strong> suku).</p>
+                    <p>• <strong>Variabel:</strong> Huruf penanda nilai yang belum diketahui, yaitu <code>x</code>.</p>
+                    <p>• <strong>Koefisien dari x:</strong> Angka yang mengalikan variabel <code>x</code>, yaitu <code>3</code>.</p>
+                    <p>• <strong>Konstanta:</strong> Angka murni yang berdiri sendiri tanpa huruf, yaitu <code>2</code>.</p>
                 `
             },
             {
-                id: 2,
+                slideNum: 2,
                 expression: "3x + 2y + 4",
-                details: [
-                    { label: "Jumlah suku", val: "Tiga (3x, 2y, dan 4)", color: "border-cyan-500/40 bg-cyan-950/20" },
-                    { label: "Variabel", val: "x dan y", color: "border-amber-500/40 bg-amber-950/20" },
-                    { label: "Koefisien dari x", val: "3", color: "border-emerald-500/40 bg-emerald-950/20" },
-                    { label: "Koefisien dari y", val: "2", color: "border-emerald-500/40 bg-emerald-950/20" },
-                    { label: "Konstanta", val: "4", color: "border-indigo-500/40 bg-indigo-950/20" }
+                subtitle: "Bentuk 3 Suku Dua Variabel",
+                unsur: [
+                    { label: "Jumlah suku", val: "tiga" },
+                    { label: "Variabel", val: "x dan y" },
+                    { label: "Koefisien dari x", val: "3" },
+                    { label: "Koefisien dari y", val: "2" },
+                    { label: "Konstanta", val: "4" }
                 ],
                 explanation: `
-                    <p class="font-bold text-amber-300">Cara Membedakan Unsur pada 3x + 2y + 4:</p>
-                    <ul class="list-disc pl-4 space-y-1 mt-1">
-                        <li><b>Suku:</b> Ada 3 suku, yaitu <span class="text-cyan-300">3x</span>, <span class="text-cyan-300">2y</span>, dan <span class="text-cyan-300">4</span>.</li>
-                        <li><b>Variabel:</b> Terdapat dua jenis variabel huruf, yaitu <span class="text-amber-300">x</span> dan <span class="text-amber-300">y</span>.</li>
-                        <li><b>Koefisien x:</b> Angka di depan x adalah <span class="text-emerald-300">3</span>.</li>
-                        <li><b>Koefisien y:</b> Angka di depan y adalah <span class="text-emerald-300">2</span>.</li>
-                        <li><b>Konstanta:</b> Angka tanpa variabel adalah <span class="text-indigo-300">4</span>.</li>
-                    </ul>
+                    <p>• <strong>Suku:</strong> Dipisahkan tanda <code>+</code>, yaitu <code>3x</code>, <code>2y</code>, dan <code>4</code> (total <strong>tiga</strong> suku).</p>
+                    <p>• <strong>Variabel:</strong> Ada dua huruf berbeda, yaitu <code>x</code> dan <code>y</code>.</p>
+                    <p>• <strong>Koefisien:</strong> Angka di depan <code>x</code> adalah <code>3</code>, dan angka di depan <code>y</code> adalah <code>2</code>.</p>
+                    <p>• <strong>Konstanta:</strong> Angka murni di bagian akhir, yaitu <code>4</code>.</p>
                 `
             },
             {
-                id: 3,
+                slideNum: 3,
                 expression: "2x² + 5x + 10",
-                details: [
-                    { label: "Jumlah suku", val: "Tiga (2x², 5x, dan 10)", color: "border-cyan-500/40 bg-cyan-950/20" },
-                    { label: "Variabel", val: "x", color: "border-amber-500/40 bg-amber-950/20" },
-                    { label: "Koefisien dari x²", val: "2", color: "border-emerald-500/40 bg-emerald-950/20" },
-                    { label: "Koefisien dari x", val: "5", color: "border-emerald-500/40 bg-emerald-950/20" },
-                    { label: "Konstanta", val: "10", color: "border-indigo-500/40 bg-indigo-950/20" }
+                subtitle: "Bentuk Kuadrat (Pangkat Berbeda)",
+                unsur: [
+                    { label: "Jumlah suku", val: "tiga" },
+                    { label: "Variabel", val: "x" },
+                    { label: "Koefisien dari x²", val: "2" },
+                    { label: "Koefisien dari x", val: "5" },
+                    { label: "Konstanta", val: "10" }
                 ],
                 explanation: `
-                    <p class="font-bold text-amber-300">Catatan Membedakan x² dan x:</p>
-                    <ul class="list-disc pl-4 space-y-1 mt-1">
-                        <li>Variabel dasarnya adalah <span class="text-amber-300">x</span>.</li>
-                        <li>Suku <span class="text-cyan-300">x²</span> (x pangkat dua) berbeda jenis sukunya dengan suku <span class="text-cyan-300">x</span>.</li>
-                        <li>Koefisien dari <span class="text-cyan-300">x²</span> adalah angka di depannya, yaitu <span class="text-emerald-300">2</span>.</li>
-                        <li>Koefisien dari <span class="text-cyan-300">x</span> adalah <span class="text-emerald-300">5</span>.</li>
-                        <li>Konstanta adalah <span class="text-indigo-300">10</span>.</li>
-                    </ul>
+                    <p>• <strong>Suku:</strong> Ada <strong>tiga</strong> suku, yaitu <code>2x²</code>, <code>5x</code>, dan <code>10</code>.</p>
+                    <p>• <strong>Variabel:</strong> Huruf utamanya adalah <code>x</code> (terdapat bentuk <code>x²</code> dan <code>x</code>).</p>
+                    <p>• <strong>Koefisien:</strong> Pengali untuk <code>x²</code> adalah <code>2</code>, sedangkan pengali untuk <code>x</code> (pangkat 1) adalah <code>5</code>.</p>
+                    <p>• <strong>Konstanta:</strong> Angka murni tanpa variabel adalah <code>10</code>.</p>
                 `
             },
             {
-                id: 4,
+                slideNum: 4,
                 expression: "-2x - 12",
-                details: [
-                    { label: "Jumlah suku", val: "Dua (-2x dan -12)", color: "border-cyan-500/40 bg-cyan-950/20" },
-                    { label: "Variabel", val: "x", color: "border-amber-500/40 bg-amber-950/20" },
-                    { label: "Koefisien dari x", val: "-2", color: "border-emerald-500/40 bg-emerald-950/20" },
-                    { label: "Konstanta", val: "-12", color: "border-indigo-500/40 bg-indigo-950/20" }
+                subtitle: "Bentuk Suku Negatif",
+                unsur: [
+                    { label: "Jumlah suku", val: "dua" },
+                    { label: "Variabel", val: "x" },
+                    { label: "Koefisien dari x", val: "-2" },
+                    { label: "Konstanta", val: "-12" }
                 ],
                 explanation: `
-                    <p class="font-bold text-amber-300">Perhatikan Tanda Negatif (-):</p>
-                    <ul class="list-disc pl-4 space-y-1 mt-1">
-                        <li>Tanda minus di depan angka dianggap **bagian dari nilai angka tersebut**.</li>
-                        <li>Koefisien dari x adalah <span class="text-emerald-300 font-bold">-2</span> (bukan 2).</li>
-                        <li>Konstanta adalah <span class="text-indigo-300 font-bold">-12</span> (bukan 12).</li>
-                    </ul>
+                    <p>• <strong>Suku:</strong> Tanda kurang (<code>-</code>) ikut dengan suku di belakangnya, sehingga sukunya adalah <code>-2x</code> dan <code>-12</code> (total <strong>dua</strong> suku).</p>
+                    <p>• <strong>Variabel:</strong> Huruf peubah adalah <code>x</code>.</p>
+                    <p>• <strong>Koefisien dari x:</strong> Karena ada tanda minus di depan 2, maka koefisiennya adalah <code>-2</code>.</p>
+                    <p>• <strong>Konstanta:</strong> Angka tetap beserta tanda minusnya adalah <code>-12</code>.</p>
                 `
             },
             {
-                id: 5,
+                slideNum: 5,
                 expression: "2x - 5y - 4",
-                details: [
-                    { label: "Jumlah suku", val: "Tiga (2x, -5y, dan -4)", color: "border-cyan-500/40 bg-cyan-950/20" },
-                    { label: "Variabel", val: "x dan y", color: "border-amber-500/40 bg-amber-950/20" },
-                    { label: "Koefisien dari x", val: "2", color: "border-emerald-500/40 bg-emerald-950/20" },
-                    { label: "Koefisien dari y", val: "-5", color: "border-emerald-500/40 bg-emerald-950/20" },
-                    { label: "Konstanta", val: "-4", color: "border-indigo-500/40 bg-indigo-950/20" }
+                subtitle: "Dua Variabel dengan Tanda Campuran",
+                unsur: [
+                    { label: "Jumlah suku", val: "tiga" },
+                    { label: "Variabel", val: "x dan y" },
+                    { label: "Koefisien dari x", val: "2" },
+                    { label: "Koefisien dari y", val: "-5" },
+                    { label: "Konstanta", val: "-4" }
                 ],
                 explanation: `
-                    <p class="font-bold text-amber-300">Memperhatikan Tanda Operasi:</p>
-                    <ul class="list-disc pl-4 space-y-1 mt-1">
-                        <li>Suku kedua adalah <span class="text-cyan-300">-5y</span>, sehingga koefisien dari <span class="text-amber-300">y</span> adalah <span class="text-emerald-300">-5</span>.</li>
-                        <li>Suku ketiga adalah <span class="text-cyan-300">-4</span>, sehingga konstantanya adalah <span class="text-indigo-300">-4</span>.</li>
-                    </ul>
+                    <p>• <strong>Suku:</strong> Terdapat <strong>tiga</strong> suku, yaitu <code>2x</code>, <code>-5y</code>, dan <code>-4</code>.</p>
+                    <p>• <strong>Variabel:</strong> Huruf peubah adalah <code>x</code> dan <code>y</code>.</p>
+                    <p>• <strong>Koefisien:</strong> Pengali <code>x</code> adalah <code>2</code>. Pengali <code>y</code> membawa tanda negatif yaitu <code>-5</code>.</p>
+                    <p>• <strong>Konstanta:</strong> Angka murni beserta tanda negatifnya yaitu <code>-4</code>.</p>
                 `
             },
             {
-                id: 6,
+                slideNum: 6,
                 expression: "-4x² + 2x - 3",
-                details: [
-                    { label: "Jumlah suku", val: "Tiga (-4x², 2x, dan -3)", color: "border-cyan-500/40 bg-cyan-950/20" },
-                    { label: "Variabel", val: "x", color: "border-amber-500/40 bg-amber-950/20" },
-                    { label: "Koefisien dari x²", val: "-4", color: "border-emerald-500/40 bg-emerald-950/20" },
-                    { label: "Koefisien dari x", val: "2", color: "border-emerald-500/40 bg-emerald-950/20" },
-                    { label: "Konstanta", val: "-3", color: "border-indigo-500/40 bg-indigo-950/20" }
+                subtitle: "Bentuk Kuadrat dengan Koefisien Negatif",
+                unsur: [
+                    { label: "Jumlah suku", val: "tiga" },
+                    { label: "Variabel", val: "x" },
+                    { label: "Koefisien dari x²", val: "-4" },
+                    { label: "Koefisien dari x", val: "2" },
+                    { label: "Konstanta", val: "-3" }
                 ],
                 explanation: `
-                    <p class="font-bold text-amber-300">Gabungan Pangkat & Negatif:</p>
-                    <ul class="list-disc pl-4 space-y-1 mt-1">
-                        <li>Koefisien dari suku pertama <span class="text-cyan-300">-4x²</span> adalah <span class="text-emerald-300">-4</span>.</li>
-                        <li>Koefisien dari <span class="text-cyan-300">2x</span> adalah <span class="text-emerald-300">2</span>.</li>
-                        <li>Konstanta adalah <span class="text-indigo-300">-3</span>.</li>
-                    </ul>
+                    <p>• <strong>Suku:</strong> Memiliki <strong>tiga</strong> suku, yaitu <code>-4x²</code>, <code>2x</code>, dan <code>-3</code>.</p>
+                    <p>• <strong>Variabel:</strong> Variabel utamanya adalah <code>x</code>.</p>
+                    <p>• <strong>Koefisien:</strong> Pengali suku kuadrat <code>x²</code> adalah <code>-4</code>, dan pengali suku <code>x</code> adalah <code>2</code>.</p>
+                    <p>• <strong>Konstanta:</strong> Angka murni bernilai <code>-3</code>.</p>
                 `
             },
             {
-                id: 7,
-                expression: "- x + y - z",
-                details: [
-                    { label: "Jumlah suku", val: "Tiga (-x, y, dan -z)", color: "border-cyan-500/40 bg-cyan-950/20" },
-                    { label: "Variabel", val: "x, y dan z", color: "border-amber-500/40 bg-amber-950/20" },
-                    { label: "Koefisien dari x", val: "-1", color: "border-emerald-500/40 bg-emerald-950/20" },
-                    { label: "Koefisien dari y", val: "1", color: "border-emerald-500/40 bg-emerald-950/20" },
-                    { label: "Koefisien dari z", val: "-1", color: "border-emerald-500/40 bg-emerald-950/20" },
-                    { label: "Konstanta", val: "0 (tidak ada angka murni)", color: "border-indigo-500/40 bg-indigo-950/20" }
+                slideNum: 7,
+                expression: "-x + y - z",
+                subtitle: "Koefisien 1 / -1 dan Tanpa Konstanta",
+                unsur: [
+                    { label: "Jumlah suku", val: "tiga" },
+                    { label: "Variabel", val: "x, y, dan z" },
+                    { label: "Koefisien dari x", val: "-1" },
+                    { label: "Koefisien dari y", val: "1" },
+                    { label: "Koefisien dari z", val: "-1" },
+                    { label: "Konstanta", val: "0" }
                 ],
                 explanation: `
-                    <p class="font-bold text-amber-300">Aturan Angka 1 yang Tidak Ditulis:</p>
-                    <ul class="list-disc pl-4 space-y-1 mt-1">
-                        <li>Variabel tanpa angka tertulis di depannya sebenarnya memiliki **koefisien 1** atau **-1**.</li>
-                        <li><span class="text-cyan-300">-x</span> artinya <span class="text-emerald-300">-1x</span> (koefisien = -1).</li>
-                        <li><span class="text-cyan-300">y</span> artinya <span class="text-emerald-300">1y</span> (koefisien = 1).</li>
-                        <li><span class="text-cyan-300">-z</span> artinya <span class="text-emerald-300">-1z</span> (koefisien = -1).</li>
-                        <li>Karena tidak ada bilangan murni tanpa variabel, konstantanya bernilai <span class="text-indigo-300">0</span>.</li>
-                    </ul>
+                    <p>• <strong>Suku:</strong> Terdiri dari <strong>tiga</strong> suku: <code>-x</code>, <code>y</code>, dan <code>-z</code>.</p>
+                    <p>• <strong>Variabel:</strong> Terdapat 3 huruf variabel berbeda, yaitu <code>x</code>, <code>y</code>, dan <code>z</code>.</p>
+                    <p>• <strong>Koefisien:</strong> Jika variabel tidak tertulis angkanya, nilainya adalah 1. Bentuk <code>-x</code> berarti <code>-1</code>, bentuk <code>y</code> berarti <code>1</code>, dan <code>-z</code> berarti <code>-1</code>.</p>
+                    <p>• <strong>Konstanta:</strong> Karena tidak ada angka murni yang dituliskan, konstantanya bernilai <code>0</code>.</p>
                 `
             },
             {
-                id: 8,
+                slideNum: 8,
                 expression: "-4x² + 3y² - 2x + 4y - 13",
-                details: [
-                    { label: "Jumlah suku", val: "Lima (-4x², 3y², -2x, 4y, -13)", color: "border-cyan-500/40 bg-cyan-950/20" },
-                    { label: "Variabel", val: "x dan y", color: "border-amber-500/40 bg-amber-950/20" },
-                    { label: "Koefisien dari x²", val: "-4", color: "border-emerald-500/40 bg-emerald-950/20" },
-                    { label: "Koefisien dari y²", val: "3", color: "border-emerald-500/40 bg-emerald-950/20" },
-                    { label: "Koefisien dari x", val: "-2", color: "border-emerald-500/40 bg-emerald-950/20" },
-                    { label: "Koefisien dari y", val: "4", color: "border-emerald-500/40 bg-emerald-950/20" },
-                    { label: "Konstanta", val: "-13", color: "border-indigo-500/40 bg-indigo-950/20" }
+                subtitle: "Bentuk Kompleks (5 Suku)",
+                unsur: [
+                    { label: "Jumlah suku", val: "lima" },
+                    { label: "Variabel", val: "x dan y" },
+                    { label: "Koefisien dari x²", val: "-4" },
+                    { label: "Koefisien dari x", val: "-2" },
+                    { label: "Koefisien dari y²", val: "3" },
+                    { label: "Koefisien dari y", val: "4" },
+                    { label: "Konstanta", val: "-13" }
                 ],
                 explanation: `
-                    <p class="font-bold text-amber-300">Persamaan Kompleks (5 Suku):</p>
-                    <ul class="list-disc pl-4 space-y-1 mt-1">
-                        <li>Identifikasi tiap suku satu per satu dari kiri ke kanan.</li>
-                        <li>Suku 1: <span class="text-cyan-300">-4x²</span> (koefisien x² = -4)</li>
-                        <li>Suku 2: <span class="text-cyan-300">3y²</span> (koefisien y² = 3)</li>
-                        <li>Suku 3: <span class="text-cyan-300">-2x</span> (koefisien x = -2)</li>
-                        <li>Suku 4: <span class="text-cyan-300">4y</span> (koefisien y = 4)</li>
-                        <li>Suku 5: <span class="text-cyan-300">-13</span> (konstanta = -13)</li>
-                    </ul>
+                    <p>• <strong>Suku:</strong> Terdiri dari <strong>lima</strong> suku terpisah: <code>-4x²</code>, <code>3y²</code>, <code>-2x</code>, <code>4y</code>, dan <code>-13</code>.</p>
+                    <p>• <strong>Variabel:</strong> Menggunakan dua variabel utama, yaitu <code>x</code> dan <code>y</code>.</p>
+                    <p>• <strong>Koefisien:</strong> <code>x²</code> berkoefisien <code>-4</code>, <code>x</code> berkoefisien <code>-2</code>, <code>y²</code> berkoefisien <code>3</code>, dan <code>y</code> berkoefisien <code>4</code>.</p>
+                    <p>• <strong>Konstanta:</strong> Angka murni paling belakang adalah <code>-13</code>.</p>
                 `
             }
         ];
 
-        /* ================= DATA LATIHAN SOAL (24 SOAL: 8 TIPE x 3 CONTOH) ================= */
+        // ================= DATA HALAMAN 2 (24 SOAL KUIS - 3 MIRIP UNTUK TIAP TAMPILAN) =================
         const quizQuestions = [
-            // Tipe 1 (mirip 3x + 2)
+            // --- TIPE 1 (Mirip 3x + 2) ---
             {
+                type: 1,
                 expr: "5a + 7",
-                question: "Berapakah koefisien dari variabel a dan konstantanya?",
-                options: ["Koefisien = 5, Konstanta = 7", "Koefisien = 7, Konstanta = 5", "Koefisien = a, Konstanta = 7", "Jumlah suku = 5"],
+                question: "Berapakah jumlah suku dan koefisien dari a pada persamaan 5a + 7?",
+                options: [
+                    "Jumlah suku = dua, Koefisien a = 5",
+                    "Jumlah suku = tiga, Koefisien a = 7",
+                    "Jumlah suku = dua, Koefisien a = 7",
+                    "Jumlah suku = satu, Koefisien a = 5"
+                ],
                 correct: 0,
-                explanation: "Pada 5a + 7, angka di depan variabel a adalah 5 (koefisien) dan angka murni adalah 7 (konstanta)."
+                explanation: "Suku ada dua (5a dan 7). Koefisien dari a adalah angka 5."
             },
             {
-                expr: "4m + 9",
-                question: "Berapakah jumlah suku pada bentuk aljabar tersebut?",
-                options: ["Satu", "Dua", "Tiga", "Empat"],
-                correct: 1,
-                explanation: "Suku-sukunya adalah 4m dan 9, sehingga jumlah sukunya ada dua."
+                type: 1,
+                expr: "4p + 9",
+                question: "Manakah yang merupakan konstanta dari persamaan 4p + 9?",
+                options: ["4", "p", "9", "4p"],
+                correct: 2,
+                explanation: "Konstanta adalah angka murni tanpa variabel, yaitu 9."
             },
             {
-                expr: "8p + 3",
-                question: "Manakah yang merupakan variabel dari bentuk aljabar tersebut?",
-                options: ["8", "p", "3", "8p"],
+                type: 1,
+                expr: "8m + 3",
+                question: "Sebutkan variabel dan koefisiennya pada persamaan 8m + 3!",
+                options: [
+                    "Variabel = 8, Koefisien = m",
+                    "Variabel = m, Koefisien dari m = 8",
+                    "Variabel = m, Koefisien dari m = 3",
+                    "Variabel = 3, Koefisien = 8"
+                ],
                 correct: 1,
-                explanation: "Variabel adalah simbol huruf yang digunakan, yaitu p."
+                explanation: "Variabel berupa huruf m, dan koefisien dari m adalah 8."
             },
 
-            // Tipe 2 (mirip 3x + 2y + 4)
+            // --- TIPE 2 (Mirip 3x + 2y + 4) ---
             {
+                type: 2,
                 expr: "4a + 3b + 8",
-                question: "Berapakah koefisien dari b dan konstantanya?",
-                options: ["Koefisien b = 4, Konstanta = 8", "Koefisien b = 3, Konstanta = 8", "Koefisien b = 8, Konstanta = 3", "Variabel = a saja"],
+                question: "Berapa jumlah suku dan apa saja variabel pada persamaan 4a + 3b + 8?",
+                options: [
+                    "Jumlah suku = dua, Variabel = a",
+                    "Jumlah suku = tiga, Variabel = a dan b",
+                    "Jumlah suku = tiga, Variabel = a, b, dan 8",
+                    "Jumlah suku = empat, Variabel = b"
+                ],
                 correct: 1,
-                explanation: "Koefisien dari b adalah angka di depan b, yaitu 3. Konstantanya adalah 8."
+                explanation: "Memiliki 3 suku (4a, 3b, 8) dan variabelnya adalah huruf a dan b."
             },
             {
-                expr: "6m + 2n + 5",
-                question: "Apa saja variabel yang terdapat pada persamaan tersebut?",
-                options: ["m saja", "n saja", "m dan n", "6 dan 2"],
-                correct: 2,
-                explanation: "Variabel huruf yang muncul adalah m dan n."
+                type: 2,
+                expr: "5x + 7y + 2",
+                question: "Berapakah koefisien dari y pada persamaan 5x + 7y + 2?",
+                options: ["5", "7", "2", "x"],
+                correct: 1,
+                explanation: "Koefisien dari y adalah angka yang mengalikan y, yaitu 7."
             },
             {
-                expr: "7p + 4q + 1",
-                question: "Berapakah jumlah suku pada bentuk aljabar di atas?",
-                options: ["Dua", "Tiga", "Empat", "Satu"],
-                correct: 1,
-                explanation: "Suku-sukunya adalah 7p, 4q, dan 1 (total 3 suku)."
+                type: 2,
+                expr: "6m + 2n + 15",
+                question: "Manakah pernyataan yang BENAR mengenai 6m + 2n + 15?",
+                options: [
+                    "Koefisien m = 6, Koefisien n = 2, Konstanta = 15",
+                    "Koefisien m = 2, Koefisien n = 6, Konstanta = 15",
+                    "Jumlah suku = dua",
+                    "Konstanta = 2"
+                ],
+                correct: 0,
+                explanation: "Koefisien m = 6, koefisien n = 2, dan konstantanya adalah 15."
             },
 
-            // Tipe 3 (mirip 2x² + 5x + 10)
+            // --- TIPE 3 (Mirip 2x² + 5x + 10) ---
             {
-                expr: "3a² + 4a + 12",
-                question: "Berapakah koefisien dari a² dan koefisien dari a?",
-                options: ["Koefisien a² = 3, Koefisien a = 4", "Koefisien a² = 4, Koefisien a = 3", "Koefisien a² = 2, Koefisien a = 12", "Konstanta = 4"],
+                type: 3,
+                expr: "3y² + 8y + 12",
+                question: "Berapakah koefisien dari y² pada persamaan 3y² + 8y + 12?",
+                options: ["3", "8", "12", "y"],
                 correct: 0,
-                explanation: "Angka di depan a² adalah 3, dan angka di depan a adalah 4."
+                explanation: "Koefisien dari suku berkuadrat y² adalah 3."
             },
             {
-                expr: "5y² + 2y + 7",
-                question: "Manakah pernyataan yang benar mengenai konstanta persamaan tersebut?",
-                options: ["Konstantanya adalah 5", "Konstantanya adalah 2", "Konstantanya adalah 7", "Konstantanya adalah y²"],
-                correct: 2,
-                explanation: "Konstanta adalah angka tanpa variabel, yaitu 7."
-            },
-            {
+                type: 3,
                 expr: "4p² + 6p + 15",
-                question: "Berapakah jumlah suku dari bentuk aljabar tersebut?",
-                options: ["Dua", "Tiga", "Empat", "Enam"],
+                question: "Sebutkan berturut-turut koefisien dari p² dan koefisien dari p pada 4p² + 6p + 15!",
+                options: ["6 dan 4", "4 dan 6", "4 dan 15", "6 dan 15"],
                 correct: 1,
-                explanation: "Suku-sukunya ada tiga: 4p², 6p, dan 15."
-            },
-
-            // Tipe 4 (mirip -2x - 12)
-            {
-                expr: "-5m - 8",
-                question: "Berapakah koefisien dari m dan konstantanya?",
-                options: ["Koefisien = 5, Konstanta = 8", "Koefisien = -5, Konstanta = -8", "Koefisien = -5, Konstanta = 8", "Koefisien = 8, Konstanta = -5"],
-                correct: 1,
-                explanation: "Ingat tanda negatif ikut serta! Koefisien m adalah -5 dan konstanta adalah -8."
+                explanation: "Koefisien p² adalah 4, sedangkan koefisien p adalah 6."
             },
             {
-                expr: "-3k - 15",
-                question: "Berapakah nilai konstanta dari persamaan tersebut?",
-                options: ["15", "-15", "-3", "3"],
-                correct: 1,
-                explanation: "Suku terakhir adalah -15, maka konstantanya adalah -15."
-            },
-            {
-                expr: "-7a - 4",
-                question: "Berapakah koefisien dari variabel a?",
-                options: ["7", "-7", "-4", "4"],
-                correct: 1,
-                explanation: "Koefisien di depan a memuat tanda minus, yaitu -7."
-            },
-
-            // Tipe 5 (mirip 2x - 5y - 4)
-            {
-                expr: "4a - 3b - 9",
-                question: "Berapakah koefisien dari b pada bentuk aljabar tersebut?",
-                options: ["3", "-3", "4", "-9"],
-                correct: 1,
-                explanation: "Suku yang memuat b adalah -3b, jadi koefisiennya adalah -3."
-            },
-            {
-                expr: "8p - 2q - 7",
-                question: "Berapakah konstanta dan jumlah suku dari bentuk aljabar tersebut?",
-                options: ["Konstanta = -7, Jumlah suku = 3", "Konstanta = 7, Jumlah suku = 3", "Konstanta = -7, Jumlah suku = 2", "Konstanta = -2, Jumlah suku = 3"],
+                type: 3,
+                expr: "5m² + 2m + 9",
+                question: "Berapa jumlah suku dan apakah variabel pada persamaan 5m² + 2m + 9?",
+                options: [
+                    "Jumlah suku = tiga, Variabel = m",
+                    "Jumlah suku = tiga, Variabel = m² dan m",
+                    "Jumlah suku = dua, Variabel = m",
+                    "Jumlah suku = empat, Variabel = 9"
+                ],
                 correct: 0,
-                explanation: "Konstantanya adalah -7 dan sukunya ada tiga (8p, -2q, -7)."
-            },
-            {
-                expr: "3m - 7n - 2",
-                question: "Berapakah koefisien m dan koefisien n secara berurutan?",
-                options: ["3 dan 7", "3 dan -7", "-3 dan -7", "7 dan 2"],
-                correct: 1,
-                explanation: "Koefisien m = 3, sedangkan koefisien n = -7."
+                explanation: "Jumlah suku ada 3 (5m², 2m, 9) dan variabel utamanya adalah m."
             },
 
-            // Tipe 6 (mirip -4x² + 2x - 3)
+            // --- TIPE 4 (Mirip -2x - 12) ---
             {
-                expr: "-2p² + 6p - 5",
-                question: "Berapakah koefisien p² dan koefisien p berturut-turut?",
-                options: ["-2 dan 6", "2 dan 6", "-2 dan -5", "6 dan -5"],
+                type: 4,
+                expr: "-5y - 8",
+                question: "Berapakah koefisien dari y dan konstantanya pada -5y - 8?",
+                options: [
+                    "Koefisien y = 5, Konstanta = 8",
+                    "Koefisien y = -5, Konstanta = -8",
+                    "Koefisien y = -5, Konstanta = 8",
+                    "Koefisien y = 5, Konstanta = -8"
+                ],
+                correct: 1,
+                explanation: "Tanda minus pada suku tetap diikutkan: koefisien y = -5, konstanta = -8."
+            },
+            {
+                type: 4,
+                expr: "-3a - 20",
+                question: "Manakah suku-suku dari persamaan -3a - 20?",
+                options: ["3a dan 20", "-3a dan -20", "-3 dan -20", "a dan 20"],
+                correct: 1,
+                explanation: "Dua suku pada persamaan tersebut adalah -3a dan -20."
+            },
+            {
+                type: 4,
+                expr: "-7x - 4",
+                question: "Berapa jumlah suku dan apa variabel dari -7x - 4?",
+                options: [
+                    "Jumlah suku = dua, Variabel = x",
+                    "Jumlah suku = dua, Variabel = -7x",
+                    "Jumlah suku = satu, Variabel = x",
+                    "Jumlah suku = tiga, Variabel = x"
+                ],
                 correct: 0,
-                explanation: "Koefisien p² adalah -2 dan koefisien p adalah 6."
-            },
-            {
-                expr: "-5x² + 3x - 11",
-                question: "Berapakah konstanta dari bentuk aljabar tersebut?",
-                options: ["11", "-11", "-5", "3"],
-                correct: 1,
-                explanation: "Konstanta berupa bilangan murni adalah -11."
-            },
-            {
-                expr: "-3y² + 8y - 4",
-                question: "Apa saja variabel dari persamaan tersebut?",
-                options: ["y² saja", "y saja", "y (dengan suku y² dan y)", "3 dan 8"],
-                correct: 2,
-                explanation: "Variabel utamanya adalah huruf y."
+                explanation: "Terdiri dari dua suku (-7x dan -4) dengan variabel x."
             },
 
-            // Tipe 7 (mirip -x + y - z)
+            // --- TIPE 5 (Mirip 2x - 5y - 4) ---
             {
+                type: 5,
+                expr: "3a - 7b - 6",
+                question: "Berapakah koefisien dari b pada persamaan 3a - 7b - 6?",
+                options: ["7", "-7", "3", "-6"],
+                correct: 1,
+                explanation: "Suku kedua adalah -7b, sehingga koefisien dari b adalah -7."
+            },
+            {
+                type: 5,
+                expr: "8x - 2y - 9",
+                question: "Sebutkan konstanta dari persamaan 8x - 2y - 9!",
+                options: ["9", "-9", "8", "-2"],
+                correct: 1,
+                explanation: "Konstanta adalah angka murni beserta tanda minusnya, yaitu -9."
+            },
+            {
+                type: 5,
+                expr: "4p - 6q - 1",
+                question: "Berapa jumlah suku dan variabel pada 4p - 6q - 1?",
+                options: [
+                    "Jumlah suku = tiga, Variabel = p dan q",
+                    "Jumlah suku = tiga, Variabel = p, q, dan 1",
+                    "Jumlah suku = dua, Variabel = p",
+                    "Jumlah suku = tiga, Variabel = 4 dan -6"
+                ],
+                correct: 0,
+                explanation: "Memiliki 3 suku (4p, -6q, -1) dan 2 variabel (p dan q)."
+            },
+
+            // --- TIPE 6 (Mirip -4x² + 2x - 3) ---
+            {
+                type: 6,
+                expr: "-2x² + 6x - 5",
+                question: "Berapakah koefisien dari x² pada persamaan -2x² + 6x - 5?",
+                options: ["2", "-2", "6", "-5"],
+                correct: 1,
+                explanation: "Koefisien dari x² adalah -2 (tanda negatif ikut)."
+            },
+            {
+                type: 6,
+                expr: "-5m² + 3m - 8",
+                question: "Berapakah koefisien dari m (pangkat 1) pada -5m² + 3m - 8?",
+                options: ["-5", "3", "-8", "m"],
+                correct: 1,
+                explanation: "Koefisien dari m adalah angka 3."
+            },
+            {
+                type: 6,
+                expr: "-3p² + 4p - 10",
+                question: "Manakah pernyataan yang BENAR untuk -3p² + 4p - 10?",
+                options: [
+                    "Koefisien p² = -3, Koefisien p = 4, Konstanta = -10",
+                    "Koefisien p² = 3, Koefisien p = 4, Konstanta = 10",
+                    "Jumlah suku = empat",
+                    "Konstanta = 10"
+                ],
+                correct: 0,
+                explanation: "Koefisien p² = -3, koefisien p = 4, dan konstantanya = -10."
+            },
+
+            // --- TIPE 7 (Mirip -x + y - z) ---
+            {
+                type: 7,
                 expr: "-a + b - c",
-                question: "Berapakah koefisien dari a, b, dan c secara berurutan?",
-                options: ["1, 1, 1", "-1, 1, -1", "-1, -1, -1", "0, 1, 0"],
+                question: "Berapakah koefisien dari a dan koefisien dari b pada -a + b - c?",
+                options: [
+                    "Koefisien a = 1, Koefisien b = 1",
+                    "Koefisien a = -1, Koefisien b = 1",
+                    "Koefisien a = -1, Koefisien b = -1",
+                    "Koefisien a = 0, Koefisien b = 1"
+                ],
                 correct: 1,
-                explanation: "-a bermakna -1a, +b bermakna 1b, dan -c bermakna -1c."
+                explanation: "Bentuk -a berarti -1a (koefisien -1) dan +b berarti 1b (koefisien 1)."
             },
             {
-                expr: "p - q - r",
-                question: "Berapakah nilai konstanta dari bentuk aljabar p - q - r?",
-                options: ["1", "-1", "0", "Tidak memiliki suku"],
+                type: 7,
+                expr: "-p + q - r",
+                question: "Berapakah nilai KONSTANTA pada bentuk aljabar -p + q - r?",
+                options: ["1", "-1", "0", "Tidak bisa ditentukan"],
                 correct: 2,
-                explanation: "Karena tidak ada suku angka murni tanpa huruf, nilainya bernilai 0."
+                explanation: "Karena tidak ada suku angka murni, maka nilai konstantanya adalah 0."
             },
             {
-                expr: "-m - n + k",
-                question: "Berapakah koefisien dari n pada bentuk aljabar tersebut?",
-                options: ["1", "-1", "0", "n"],
-                correct: 1,
-                explanation: "Suku -n memiliki koefisien tersembunyi yaitu -1."
+                type: 7,
+                expr: "-x + y - z",
+                question: "Berapa jumlah suku dan variabel pada -x + y - z?",
+                options: [
+                    "Jumlah suku = tiga, Variabel = x, y, dan z",
+                    "Jumlah suku = dua, Variabel = x dan y",
+                    "Jumlah suku = tiga, Variabel = -1, 1, dan -1",
+                    "Jumlah suku = satu, Variabel = xyz"
+                ],
+                correct: 0,
+                explanation: "Ada 3 suku (-x, y, -z) dan variabelnya adalah huruf x, y, dan z."
             },
 
-            // Tipe 8 (mirip -4x² + 3y² - 2x + 4y - 13)
+            // --- TIPE 8 (Mirip -4x² + 3y² - 2x + 4y - 13) ---
             {
-                expr: "-2a² + 5b² - 3a + 2b - 10",
-                question: "Berapakah jumlah suku dan konstantanya?",
-                options: ["Jumlah suku = 5, Konstanta = -10", "Jumlah suku = 4, Konstanta = 10", "Jumlah suku = 5, Konstanta = 10", "Jumlah suku = 6, Konstanta = -10"],
-                correct: 0,
-                explanation: "Suku ada 5 (-2a², 5b², -3a, 2b, -10) dan konstantanya adalah -10."
-            },
-            {
-                expr: "-6m² + 2n² - 4m + 7n - 18",
-                question: "Berapakah koefisien dari m² dan koefisien dari m?",
-                options: ["Koefisien m² = -6, Koefisien m = -4", "Koefisien m² = 6, Koefisien m = 4", "Koefisien m² = 2, Koefisien m = 7", "Koefisien m² = -18, Koefisien m = -4"],
-                correct: 0,
-                explanation: "Suku m² adalah -6m² (koefisien -6), dan suku m adalah -4m (koefisien -4)."
-            },
-            {
-                expr: "-3x² + 4y² - x + 5y - 8",
-                question: "Berapakah koefisien dari variabel x?",
-                options: ["-3", "1", "-1", "-8"],
+                type: 8,
+                expr: "-2x² + 5y² - 3x + 6y - 20",
+                question: "Berapakah jumlah suku pada persamaan -2x² + 5y² - 3x + 6y - 20?",
+                options: ["Tiga", "Empat", "Lima", "Enam"],
                 correct: 2,
-                explanation: "Suku yang memuat variabel x adalah -x, yang artinya koefisiennya adalah -1."
+                explanation: "Jumlah suku ada lima: -2x², 5y², -3x, 6y, dan -20."
+            },
+            {
+                type: 8,
+                expr: "-3a² + 2b² - 4a + 7b - 15",
+                question: "Berapakah koefisien dari a dan koefisien dari b² berturut-turut?",
+                options: ["-3 dan 2", "-4 dan 2", "-4 dan 7", "3 dan -15"],
+                correct: 1,
+                explanation: "Koefisien dari a adalah -4, dan koefisien dari b² adalah 2."
+            },
+            {
+                type: 8,
+                expr: "-5p² + 4q² - 2p + 3q - 11",
+                question: "Manakah yang merupakan konstanta dari -5p² + 4q² - 2p + 3q - 11?",
+                options: ["11", "-11", "-5", "4"],
+                correct: 1,
+                explanation: "Konstanta adalah angka murni paling akhir beserta tanda minusnya (-11)."
             }
         ];
 
-        /* ================= APP STATE ================= */
-        let currentSlideIndex = 0; // 0 to 7
-        let currentQuizIndex = 0; // 0 to 23
+        // State Global Variables
+        let currentSlide = 0;
+        let quizIndex = 0;
         let quizScore = 0;
-        let answeredQuestions = 0;
+        let quizCorrectCount = 0;
+        let isOptionSelected = false;
 
-        /* ================= DOM ELEMENTS ================= */
-        const sectionMateri = document.getElementById('section-materi');
-        const sectionQuiz = document.getElementById('section-quiz');
-        const sectionResult = document.getElementById('section-result');
+        // Initialize Page on Load
+        window.onload = function() {
+            renderDots();
+            renderSlide(0);
+        };
 
-        const headerTitle = document.getElementById('header-title');
-        const headerSubtitle = document.getElementById('header-subtitle');
-        const slideBadge = document.getElementById('slide-badge');
+        // Switch Between Page 1 & Page 2
+        function switchPage(pageNumber) {
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
+            const navTab1 = document.getElementById('navTab1');
+            const navTab2 = document.getElementById('navTab2');
 
-        const materiIndex = document.getElementById('materi-index');
-        const materiExpression = document.getElementById('materi-expression');
-        const materiDetailsGrid = document.getElementById('materi-details-grid');
-        const btnPrevSlide = document.getElementById('btn-prev-slide');
-        const btnNextSlide = document.getElementById('btn-next-slide');
+            if (pageNumber === 1) {
+                page1.classList.remove('hidden');
+                page1.classList.add('flex');
+                page2.classList.add('hidden');
+                
+                navTab1.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold font-display transition-all bg-white text-indigo-600 shadow-sm";
+                navTab2.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold font-display transition-all text-slate-600 hover:text-indigo-600";
+            } else {
+                page1.classList.add('hidden');
+                page1.classList.remove('flex');
+                page2.classList.remove('hidden');
+                page2.classList.add('flex');
+                
+                navTab2.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold font-display transition-all bg-white text-indigo-600 shadow-sm";
+                navTab1.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold font-display transition-all text-slate-600 hover:text-indigo-600";
+            }
+        }
 
-        const quizProgressText = document.getElementById('quiz-progress-text');
-        const quizTypeBadge = document.getElementById('quiz-type-badge');
-        const quizScoreEl = document.getElementById('quiz-score');
-        const quizExpression = document.getElementById('quiz-expression');
-        const quizQuestionText = document.getElementById('quiz-question-text');
-        const quizOptionsContainer = document.getElementById('quiz-options-container');
-        const quizFeedback = document.getElementById('quiz-feedback');
-        const quizFeedbackHeader = document.getElementById('quiz-feedback-header');
-        const quizFeedbackText = document.getElementById('quiz-feedback-text');
-        const btnNextQuestion = document.getElementById('btn-next-question');
+        // ================= HALAMAN 1 SLIDE LOGIC =================
+        function renderDots() {
+            const container = document.getElementById('slideDots');
+            container.innerHTML = '';
+            slidesData.forEach((_, idx) => {
+                const dot = document.createElement('div');
+                dot.id = `dot-${idx}`;
+                dot.className = "w-2.5 h-2.5 rounded-full transition-all bg-slate-300";
+                container.appendChild(dot);
+            });
+        }
 
-        const modalExplanation = document.getElementById('modal-explanation');
-        const explanationContent = document.getElementById('explanation-content');
-
-        /* ================= MATERI LOGIC ================= */
         function renderSlide(index) {
-            const data = materiData[index];
-            materiIndex.textContent = data.id;
-            materiExpression.textContent = data.expression;
-            slideBadge.textContent = `Slide ${index + 1} / 8`;
+            currentSlide = index;
+            const data = slidesData[index];
 
-            // Render Details Grid
-            materiDetailsGrid.innerHTML = '';
-            data.details.forEach(item => {
-                const card = document.createElement('div');
-                card.className = `p-2 sm:p-2.5 rounded-xl border ${item.color} flex justify-between items-center text-xs sm:text-sm`;
-                card.innerHTML = `
-                    <span class="text-slate-400 font-medium">${item.label}:</span>
-                    <span class="font-bold text-slate-100">${item.val}</span>
-                `;
-                materiDetailsGrid.appendChild(card);
+            // Hide Explanation Box when switching slide
+            hideExplanation();
+
+            // Update Progress Badge & Dots
+            document.getElementById('slideBadge').textContent = `Tampilan ${data.slideNum} dari 8`;
+            document.getElementById('slideSubtitle').textContent = data.subtitle;
+
+            slidesData.forEach((_, idx) => {
+                const dot = document.getElementById(`dot-${idx}`);
+                if (dot) {
+                    if (idx === index) {
+                        dot.className = "w-6 h-2.5 rounded-full transition-all bg-indigo-600";
+                    } else {
+                        dot.className = "w-2.5 h-2.5 rounded-full transition-all bg-slate-300";
+                    }
+                }
             });
 
-            // Update Navigation Buttons State
-            btnPrevSlide.disabled = (index === 0);
+            // Expression Box
+            document.getElementById('materiExpr').textContent = data.expression;
 
-            if (index === materiData.length - 1) {
-                btnNextSlide.innerHTML = `<span>Ke Latihan Soal</span> <i class="fa-solid fa-gamepad text-base"></i>`;
-                btnNextSlide.className = "flex-1 sm:flex-initial px-5 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/30 transition transform active:scale-95";
+            // Render Elements List
+            const listContainer = document.getElementById('materiUnsurList');
+            listContainer.innerHTML = '';
+
+            data.unsur.forEach(item => {
+                const row = document.createElement('div');
+                row.className = "flex justify-between items-center p-2.5 rounded-xl bg-slate-50 border border-slate-100 hover:bg-indigo-50/50 transition";
+                row.innerHTML = `
+                    <span class="font-medium text-slate-600 text-xs sm:text-sm">• ${item.label}</span>
+                    <span class="font-display font-bold text-indigo-700 text-sm sm:text-base bg-white px-3 py-1 rounded-lg border border-slate-200 shadow-2xs">= ${item.val}</span>
+                `;
+                listContainer.appendChild(row);
+            });
+
+            // Set Explanation Content
+            document.getElementById('explanationContent').innerHTML = data.explanation;
+
+            // Enable/Disable Prev Button
+            const prevBtn = document.getElementById('prevSlideBtn');
+            if (index === 0) {
+                prevBtn.classList.add('opacity-40', 'cursor-not-allowed');
+                prevBtn.disabled = true;
             } else {
-                btnNextSlide.innerHTML = `<span>Sudah Paham!</span> <i class="fa-solid fa-circle-check text-base"></i>`;
-                btnNextSlide.className = "flex-1 sm:flex-initial px-5 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition transform active:scale-95";
+                prevBtn.classList.remove('opacity-40', 'cursor-not-allowed');
+                prevBtn.disabled = false;
+            }
+
+            // Customize Next / Sudah Paham Button Text on Last Slide
+            const btnPaham = document.getElementById('btnSudahPaham');
+            if (index === slidesData.length - 1) {
+                btnPaham.innerHTML = `<span>Sudah Paham (Lanjut Latihan)</span> <i class="fa-solid fa-check-double"></i>`;
+            } else {
+                btnPaham.innerHTML = `<span>Sudah Paham</span> <i class="fa-solid fa-arrow-right"></i>`;
             }
         }
 
-        function nextSlide() {
-            if (currentSlideIndex < materiData.length - 1) {
-                currentSlideIndex++;
-                renderSlide(currentSlideIndex);
-            } else {
-                switchMode('quiz');
+        function changeSlide(direction) {
+            const target = currentSlide + direction;
+            if (target >= 0 && target < slidesData.length) {
+                renderSlide(target);
             }
         }
 
-        function prevSlide() {
-            if (currentSlideIndex > 0) {
-                currentSlideIndex--;
-                renderSlide(currentSlideIndex);
+        function handlePahamClick() {
+            if (currentSlide < slidesData.length - 1) {
+                renderSlide(currentSlide + 1);
+            } else {
+                // Last slide reached, navigate directly to Halaman 2 (Quiz)
+                switchPage(2);
             }
         }
 
         function showExplanation() {
-            const data = materiData[currentSlideIndex];
-            explanationContent.innerHTML = data.explanation;
-            modalExplanation.classList.remove('hidden');
+            const expBox = document.getElementById('explanationBox');
+            expBox.classList.remove('hidden');
+            expBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        function closeExplanation() {
-            modalExplanation.classList.add('hidden');
+        function hideExplanation() {
+            const expBox = document.getElementById('explanationBox');
+            expBox.classList.add('hidden');
         }
 
-        /* ================= QUIZ LOGIC ================= */
-        function renderQuestion(index) {
-            const q = quizQuestions[index];
-            quizExpression.textContent = q.expr;
-            quizQuestionText.textContent = q.question;
-            quizProgressText.textContent = `Soal ${index + 1} / ${quizQuestions.length}`;
-            quizTypeBadge.textContent = `Tipe ${Math.floor(index / 3) + 1}`;
+        // ================= HALAMAN 2 QUIZ LOGIC =================
+        function startQuiz() {
+            quizIndex = 0;
+            quizScore = 0;
+            quizCorrectCount = 0;
+
+            document.getElementById('quizIntro').classList.add('hidden');
+            document.getElementById('quizSummary').classList.add('hidden');
+            document.getElementById('quizActive').classList.remove('hidden');
+            document.getElementById('quizActive').classList.add('flex');
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            isOptionSelected = false;
+            document.getElementById('quizFeedback').classList.add('hidden');
+
+            const q = quizQuestions[quizIndex];
             
-            // Reset Options & Feedback
-            quizOptionsContainer.innerHTML = '';
-            quizFeedback.classList.add('hidden');
-            btnNextQuestion.disabled = true;
+            document.getElementById('quizBadge').textContent = `Soal ${quizIndex + 1} dari ${quizQuestions.length}`;
+            document.getElementById('quizCategory').textContent = `Tipe Persamaan ${q.type} (${q.expr})`;
+            document.getElementById('currentScore').textContent = quizScore;
+            
+            document.getElementById('questionExpr').textContent = q.expr;
+            document.getElementById('questionText').textContent = q.question;
 
-            q.options.forEach((opt, idx) => {
+            // Render Options
+            const grid = document.getElementById('optionsGrid');
+            grid.innerHTML = '';
+
+            q.options.forEach((optText, optIdx) => {
                 const btn = document.createElement('button');
-                btn.className = "w-full p-2.5 sm:p-3 bg-slate-900 hover:bg-slate-700/80 border border-slate-700/80 hover:border-indigo-400 rounded-xl text-xs sm:text-sm font-medium text-left transition flex items-center justify-between group";
-                btn.onclick = () => selectOption(idx);
+                btn.id = `optBtn-${optIdx}`;
+                btn.onclick = () => selectOption(optIdx);
+                btn.className = "btn-3d bg-white hover:bg-indigo-50 border-2 border-slate-200 text-slate-800 p-4 rounded-2xl font-display font-semibold text-xs sm:text-sm text-left transition flex items-center justify-between";
+                
                 btn.innerHTML = `
-                    <span class="flex items-center gap-2">
-                        <span class="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-slate-800 group-hover:bg-indigo-600 group-hover:text-white flex items-center justify-center text-[10px] sm:text-xs font-bold text-slate-400 transition">
-                            ${String.fromCharCode(65 + idx)}
-                        </span>
-                        <span>${opt}</span>
-                    </span>
-                    <i class="fa-regular fa-circle text-slate-600 group-hover:text-indigo-400"></i>
+                    <span class="pr-2">${optText}</span>
+                    <span class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs font-bold text-slate-400 font-sans flex-shrink-0">${String.fromCharCode(65 + optIdx)}</span>
                 `;
-                quizOptionsContainer.appendChild(btn);
+                grid.appendChild(btn);
             });
         }
 
         function selectOption(selectedIndex) {
-            const q = quizQuestions[currentQuizIndex];
-            const optionButtons = quizOptionsContainer.children;
+            if (isOptionSelected) return;
+            isOptionSelected = true;
 
-            // Disable all option buttons
-            for (let i = 0; i < optionButtons.length; i++) {
-                optionButtons[i].disabled = true;
-                optionButtons[i].classList.remove('hover:bg-slate-700/80', 'hover:border-indigo-400', 'group');
-            }
-
+            const q = quizQuestions[quizIndex];
             const isCorrect = (selectedIndex === q.correct);
+
+            const feedback = document.getElementById('quizFeedback');
+            const icon = document.getElementById('feedbackIcon');
+            const title = document.getElementById('feedbackTitle');
+            const text = document.getElementById('feedbackText');
+
+            // Style options based on correct/incorrect
+            q.options.forEach((_, optIdx) => {
+                const btn = document.getElementById(`optBtn-${optIdx}`);
+                btn.disabled = true;
+                
+                if (optIdx === q.correct) {
+                    btn.className = "btn-3d bg-emerald-50 border-2 border-emerald-500 text-emerald-900 p-4 rounded-2xl font-display font-semibold text-xs sm:text-sm text-left flex items-center justify-between";
+                } else if (optIdx === selectedIndex && !isCorrect) {
+                    btn.className = "btn-3d bg-rose-50 border-2 border-rose-500 text-rose-900 p-4 rounded-2xl font-display font-semibold text-xs sm:text-sm text-left flex items-center justify-between animate-shake";
+                } else {
+                    btn.className = "opacity-50 bg-white border-2 border-slate-200 text-slate-400 p-4 rounded-2xl font-display font-semibold text-xs sm:text-sm text-left flex items-center justify-between";
+                }
+            });
 
             if (isCorrect) {
                 quizScore += 10;
-                quizScoreEl.textContent = quizScore;
-                optionButtons[selectedIndex].className = "w-full p-2.5 sm:p-3 bg-emerald-950/80 border-2 border-emerald-500 rounded-xl text-xs sm:text-sm font-semibold text-emerald-200 flex items-center justify-between";
-                optionButtons[selectedIndex].querySelector('i').className = "fa-solid fa-circle-check text-emerald-400 text-base";
+                quizCorrectCount++;
+                document.getElementById('currentScore').textContent = quizScore;
 
-                quizFeedbackHeader.className = "font-bold text-xs sm:text-sm flex items-center gap-2 text-emerald-400";
-                quizFeedbackHeader.innerHTML = `<i class="fa-solid fa-circle-check"></i> Jawaban Tepat! (+10 poin)`;
-                quizFeedback.className = "w-full max-w-2xl bg-emerald-950/40 border border-emerald-500/40 rounded-xl p-3 mt-2 text-left flex flex-col gap-1 flex-none animate-fade-in";
+                feedback.className = "p-4 rounded-2xl border bg-emerald-50 border-emerald-300 text-emerald-950 block animate-bounce-short";
+                icon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600"></i>';
+                title.textContent = "Jawaban Benar! (+10 Poin)";
+                title.className = "font-bold text-emerald-900";
             } else {
-                optionButtons[selectedIndex].className = "w-full p-2.5 sm:p-3 bg-rose-950/80 border-2 border-rose-500 rounded-xl text-xs sm:text-sm font-semibold text-rose-200 flex items-center justify-between";
-                optionButtons[selectedIndex].querySelector('i').className = "fa-solid fa-circle-xmark text-rose-400 text-base";
-
-                // Highlight correct answer
-                optionButtons[q.correct].className = "w-full p-2.5 sm:p-3 bg-emerald-950/50 border border-emerald-500/60 rounded-xl text-xs sm:text-sm font-semibold text-emerald-300 flex items-center justify-between";
-
-                quizFeedbackHeader.className = "font-bold text-xs sm:text-sm flex items-center gap-2 text-rose-400";
-                quizFeedbackHeader.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Kurang Tepat`;
-                quizFeedback.className = "w-full max-w-2xl bg-rose-950/40 border border-rose-500/40 rounded-xl p-3 mt-2 text-left flex flex-col gap-1 flex-none animate-fade-in";
+                feedback.className = "p-4 rounded-2xl border bg-rose-50 border-rose-300 text-rose-950 block animate-shake";
+                icon.innerHTML = '<i class="fa-solid fa-circle-xmark text-rose-600"></i>';
+                title.textContent = "Jawaban Kurang Tepat!";
+                title.className = "font-bold text-rose-900";
             }
 
-            quizFeedbackText.textContent = q.explanation;
-            quizFeedback.classList.remove('hidden');
-            btnNextQuestion.disabled = false;
+            text.textContent = q.explanation;
+            feedback.classList.remove('hidden');
         }
 
         function nextQuestion() {
-            if (currentQuizIndex < quizQuestions.length - 1) {
-                currentQuizIndex++;
-                renderQuestion(currentQuizIndex);
+            quizIndex++;
+            if (quizIndex < quizQuestions.length) {
+                loadQuestion();
             } else {
-                showQuizResult();
+                showQuizSummary();
             }
         }
 
-        function showQuizResult() {
-            sectionQuiz.classList.add('hidden');
-            sectionResult.classList.remove('hidden');
+        function showQuizSummary() {
+            document.getElementById('quizActive').classList.add('hidden');
+            document.getElementById('quizActive').classList.remove('flex');
+            document.getElementById('quizSummary').classList.remove('hidden');
 
-            const totalMaxScore = quizQuestions.length * 10;
-            const accuracy = Math.round((quizScore / totalMaxScore) * 100);
+            document.getElementById('summaryScore').textContent = quizScore;
+            document.getElementById('summaryCorrect').textContent = `${quizCorrectCount} / ${quizQuestions.length}`;
 
-            document.getElementById('final-score').textContent = quizScore;
-            document.getElementById('final-accuracy').textContent = `${accuracy}%`;
-        }
+            const accuracy = Math.round((quizCorrectCount / quizQuestions.length) * 100);
+            const starsContainer = document.getElementById('finalStars');
+            const evalText = document.getElementById('summaryEvalText');
 
-        function restartQuiz() {
-            currentQuizIndex = 0;
-            quizScore = 0;
-            quizScoreEl.textContent = 0;
-            sectionResult.classList.add('hidden');
-            sectionQuiz.classList.remove('hidden');
-            renderQuestion(0);
-        }
-
-        /* ================= MODE SWITCHING ================= */
-        function switchMode(mode) {
-            if (mode === 'materi') {
-                sectionQuiz.classList.add('hidden');
-                sectionResult.classList.add('hidden');
-                sectionMateri.classList.remove('hidden');
-
-                headerTitle.textContent = "MEMBEDAKAN UNSUR ALJABAR";
-                headerSubtitle.textContent = "Mode Belajar Interaktif";
-                slideBadge.classList.remove('hidden');
-            } else if (mode === 'quiz') {
-                sectionMateri.classList.add('hidden');
-                sectionResult.classList.add('hidden');
-                sectionQuiz.classList.remove('hidden');
-
-                headerTitle.textContent = "LATIHAN SOAL UNSUR ALJABAR";
-                headerSubtitle.textContent = "Uji Pemahaman Mandiri";
-                slideBadge.classList.add('hidden');
-
-                renderQuestion(currentQuizIndex);
+            let starsHTML = '';
+            if (accuracy >= 85) {
+                starsHTML = '<i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>';
+                evalText.textContent = "Sangat Luar Biasa! Kamu berhasil menguasai seluruh unsur aljabar dari 8 bentuk persamaan dengan sempurna!";
+            } else if (accuracy >= 60) {
+                starsHTML = '<i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star text-slate-300"></i>';
+                evalText.textContent = "Bagus Sekali! Pemahaman dasar kamu sudah kuat. Perhatikan lagi tanda negatif (-) pada koefisien dan konstanta.";
+            } else {
+                starsHTML = '<i class="fa-solid fa-star"></i><i class="fa-regular fa-star text-slate-300"></i><i class="fa-regular fa-star text-slate-300"></i>';
+                evalText.textContent = "Tetap Semangat! Buka kembali Halaman 1 untuk mempelajari ulang slide materi secara bertahap dan coba lagi.";
             }
-        }
 
-        /* ================= INITIALIZATION ================= */
-        window.addEventListener('DOMContentLoaded', () => {
-            renderSlide(0);
-        });
+            starsContainer.innerHTML = starsHTML;
+        }
     </script>
 </body>
 </html>
